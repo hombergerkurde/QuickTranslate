@@ -38,6 +38,7 @@ jobs:
         ln -s /usr/bin/clang++ $HOME/theos/toolchain/linux/iphone/bin/clang++
         ln -s /usr/bin/ld.lld $HOME/theos/toolchain/linux/iphone/bin/ld.lld
         ln -s /usr/bin/strip $HOME/theos/toolchain/linux/iphone/bin/strip
+        ln -s /usr/bin/llvm-lipo $HOME/theos/toolchain/linux/iphone/bin/lipo
         
     - name: Build Package
       run: |
@@ -55,8 +56,4 @@ jobs:
         cp packages/*.deb ./QuickTranslate.deb
         ls -lah QuickTranslate.deb
         
-    - name: Upload DEB
-      uses: actions/upload-artifact@v4
-      with:
-        name: QuickTranslate-hombergerkurde
-        path: QuickTranslate.deb
+    - name: U
