@@ -10,7 +10,7 @@ include $(THEOS)/makefiles/common.mk
 TWEAK_NAME = QuickTranslate
 
 QuickTranslate_FILES = Tweak.x
-QuickTranslate_CFLAGS = -fobjc-arc
+QuickTranslate_CFLAGS = -fobjc-arc -Wno-deprecated-declarations
 QuickTranslate_FRAMEWORKS = UIKit Foundation
 QuickTranslate_PRIVATE_FRAMEWORKS = UIKitCore
 
