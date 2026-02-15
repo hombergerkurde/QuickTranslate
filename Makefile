@@ -1,6 +1,6 @@
-TARGET = iphone:clang:16.5:15.0
-ARCHS = arm64
-
+export THEOS_PACKAGE_SCHEME = rootless
+export TARGET = iphone:clang:16.5:15.0
+export ARCHS = arm64
 export STRIP = :
 
 include $(THEOS)/makefiles/common.mk
@@ -12,6 +12,5 @@ QuickTranslate_CFLAGS = -fobjc-arc -Wno-deprecated-declarations
 QuickTranslate_LDFLAGS = -fuse-ld=lld
 QuickTranslate_FRAMEWORKS = UIKit Foundation
 QuickTranslate_PRIVATE_FRAMEWORKS = UIKitCore
-QuickTranslate_ARCHS = arm64
 
 include $(THEOS_MAKE_PATH)/tweak.mk
