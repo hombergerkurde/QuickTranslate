@@ -1,0 +1,50 @@
+name: Build DEB
+
+on:
+  push:
+    branches: [ main, master ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-20.04
+    
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+    
+    - name: Install Build Tools
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y curl wget unzip git
+    
+    - name: Setup Theos
+      run: |
+        git clone --recursive https://github.com/theos/theos.git $HOME/theos
+        
+    - name: Download iOS SDK
+      run: |
+        cd $HOME/theos/sdks
+        wget -q https://github.com/theos/sdks/releases/download/master/iPhoneOS16.5.sdk.tar.xz
+        tar -xf iPhoneOS16.5.sdk.tar.xz
+        rm iPhoneOS16.5.sdk.tar.xz
+        
+    - name: Download Toolchain
+      run: |
+        cd $HOME/theos
+        wget -q https://github.com/CRKatri/llvm-project/releases/download/swift-5.3.2-RELEASE/swift-5.3.2-RELEASE-ubuntu20.04.tar.xz
+        tar -xf swift-5.3.2-RELEASE-ubuntu20.04.tar.xz
+        rm swift-5.3.2-RELEASE-ubuntu20.04.tar.xz
+        
+    - name: Build Package
+      run: |
+        export THEOS=$HOME/theos
+        export PATH="$THEOS/toolchain/swift-5.3.2-RELEASE-ubuntu20.04/usr/bin:$PATH"
+        make clean
+        make package FINALPACKAGE=1
+        
+    - name: Upload DEB
+      uses: actions/upload-artifact@v4
+      with:
+        name: QuickTranslate-v2.0
+        path: packages/*.deb
