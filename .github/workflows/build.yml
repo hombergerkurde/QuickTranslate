@@ -37,6 +37,7 @@ jobs:
         ln -s /usr/bin/clang $HOME/theos/toolchain/linux/iphone/bin/clang
         ln -s /usr/bin/clang++ $HOME/theos/toolchain/linux/iphone/bin/clang++
         ln -s /usr/bin/ld.lld $HOME/theos/toolchain/linux/iphone/bin/ld.lld
+        ln -s /usr/bin/strip $HOME/theos/toolchain/linux/iphone/bin/strip
         
     - name: Build Package
       run: |
@@ -55,19 +56,3 @@ jobs:
         ls -lah
         
     - name: Copy DEB to root
-      run: |
-        if [ -f packages/*.deb ]; then
-          cp packages/*.deb ./QuickTranslate.deb
-          echo "DEB copied successfully"
-          ls -lah QuickTranslate.deb
-        else
-          echo "ERROR: No DEB file found!"
-          exit 1
-        fi
-        
-    - name: Upload DEB
-      uses: actions/upload-artifact@v4
-      with:
-        name: QuickTranslate-hombergerkurde
-        path: QuickTranslate.deb
-        if-no-files-found: error
