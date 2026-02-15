@@ -1,0 +1,9 @@
+Package: com.hombergerkurde.quicktranslate
+Name: QuickTranslate
+Version: 2.0.0
+Architecture: iphoneos-arm64
+Description: Systemweite Übersetzung mit Google Translate. Text markieren → "Übersetzen" tippen → Fertig! Funktioniert in allen Apps. Für iOS 15-18 (Palera1n, Dopamine, etc.)
+Maintainer: hombergerkurde
+Author: hombergerkurde
+Section: Tweaks
+Depends: mobilesubstrate (>= 0.9.5000), firmware (>= 15.0)
