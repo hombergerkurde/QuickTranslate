@@ -45,14 +45,18 @@ jobs:
         make clean
         make package FINALPACKAGE=1
         
-    - name: Show all DEB files
+    - name: Show DEB files
       run: |
-        echo "=== Searching for DEB files ==="
         find . -name "*.deb" -ls
-        echo "=== Packages folder content ==="
         ls -lah packages/ || echo "No packages folder"
-        echo "=== Current directory ==="
-        pwd
-        ls -lah
         
-    - name: Copy DEB to root
+    - name: Copy DEB
+      run: |
+        cp packages/*.deb ./QuickTranslate.deb
+        ls -lah QuickTranslate.deb
+        
+    - name: Upload DEB
+      uses: actions/upload-artifact@v4
+      with:
+        name: QuickTranslate-hombergerkurde
+        path: QuickTranslate.deb
