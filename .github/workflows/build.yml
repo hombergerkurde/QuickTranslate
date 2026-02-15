@@ -13,10 +13,14 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v4
     
+    - name: Install Build Tools
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y clang llvm lld build-essential fakeroot git curl unzip
+    
     - name: Setup Theos
       run: |
         git clone --recursive https://github.com/theos/theos.git $HOME/theos
-        echo "THEOS=$HOME/theos" >> $GITHUB_ENV
         
     - name: Download SDK
       run: |
@@ -27,17 +31,15 @@ jobs:
         mv sdks-master/* ./
         rm -rf sdks-master master.zip
         
-    - name: Install Build Tools
-      run: |
-        sudo apt-get update
-        sudo apt-get install -y clang llvm lld build-essential fakeroot
-        
     - name: Build Package
+      env:
+        THEOS: ${{ github.workspace }}/../theos
       run: |
         export THEOS=$HOME/theos
-        export PATH="$THEOS/bin:$PATH"
+        export PATH="/usr/bin:$PATH"
+        cd ${{ github.workspace }}
         make clean
-        make package FINALPACKAGE=1
+        make package FINALPACKAGE=1 CC=clang CXX=clang++ LD=ld.lld
         
     - name: Upload DEB
       uses: actions/upload-artifact@v4
