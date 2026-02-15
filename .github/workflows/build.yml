@@ -41,34 +41,19 @@ jobs:
         curl -LO https://github.com/ProcursusTeam/ldid/releases/download/v2.1.5-procursus7/ldid_linux_x86_64
         chmod +x ldid_linux_x86_64
         mv ldid_linux_x86_64 $HOME/theos/toolchain/linux/iphone/bin/ldid
-        which llvm-lipo || echo "llvm-lipo not found"
         if [ -f /usr/bin/llvm-lipo ]; then
           ln -s /usr/bin/llvm-lipo $HOME/theos/toolchain/linux/iphone/bin/lipo
         elif [ -f /usr/bin/llvm-lipo-18 ]; then
           ln -s /usr/bin/llvm-lipo-18 $HOME/theos/toolchain/linux/iphone/bin/lipo
         else
-          echo '#!/bin/bash' > $HOME/theos/toolchain/linux/iphone/bin/lipo
-          echo 'cp $4 $6' >> $HOME/theos/toolchain/linux/iphone/bin/lipo
+          cat > $HOME/theos/toolchain/linux/iphone/bin/lipo << 'LIPO_EOF'
+#!/bin/bash
+cp $4 $6
+LIPO_EOF
           chmod +x $HOME/theos/toolchain/linux/iphone/bin/lipo
         fi
         ls -la $HOME/theos/toolchain/linux/iphone/bin/
         
     - name: Build Package
       run: |
-        export THEOS=$HOME/theos
-        make clean
-        make package FINALPACKAGE=1
-        
-    - name: Show DEB files
-      run: |
-        find . -name "*.deb" -ls
-        
-    - name: Copy DEB
-      run: |
-        cp packages/*.deb ./QuickTranslate.deb
-        
-    - name: Upload DEB
-      uses: actions/upload-artifact@v4
-      with:
-        name: QuickTranslate-hombergerkurde
-        path: QuickTranslate.deb
+        export T
